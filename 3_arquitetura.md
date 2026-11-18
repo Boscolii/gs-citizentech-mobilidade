@@ -5,14 +5,15 @@
 ```mermaid
 flowchart LR
     C[Cidadão] --> API[API WSGI]
-    API --> D[Domínio: pontos e caso de uso]
-    D --> P[Porta PointRepository]
+    API --> P[Porta PointRepository]
     P --> R[Adaptador: repositório em memória]
-    D --> A[Porta CitizenAssistant]
-    A --> G[Adaptador IA + guardrail factual]
-    G --> L[LLM/Ollama ou fake]
-    API --> O[Logs: latência, status, traceId]
+    API --> D[Domínio: Point e porta CitizenAssistant]
+    D --> F[Adaptador factual determinístico]
+    D -. extensão futura .-> L[Adaptador para LLM + validação de saída]
+    API -. futuro .-> O[Logs e métricas]
 ```
+
+As linhas pontilhadas são propostas para produção. No slice não há LLM nem telemetria de latência implementados; somente erros recebem `traceId`.
 
 O domínio só conhece as portas `PointRepository` e `CitizenAssistant`; não importa SDK, biblioteca ou chave de LLM. Para trocar o modelo, troca-se o adaptador selecionado na composição da aplicação, mantendo domínio, endpoints e testes intactos.
 
@@ -65,5 +66,5 @@ Os itens abaixo são requisitos propostos para produção, não instrumentação
 - Logar `traceId`, rota, HTTP status e latência; nunca a pergunta completa nem dados pessoais.
 - Monitorar p95 de latência, taxa 5xx, taxa de recusa/503, tokens e custo quando houver LLM externo.
 - Alertar se p95 exceder 500 ms por cinco minutos, 5xx exceder 2% por cinco minutos ou a base estiver há mais de 24h sem atualização.
-- Validar `limit`, `offset`, JSON e campos obrigatórios na API; limitar pergunta a 300 caracteres antes de encaminhá-la ao adaptador.
+- Validar `limit`, `offset`, JSON e campos obrigatórios na API; limitar pergunta a 300 caracteres antes de encaminhá-la ao adaptador. Essas validações já existem no slice.
 - Segredos ficam em variável de ambiente/configuração do ambiente, nunca em código, log ou repositório.

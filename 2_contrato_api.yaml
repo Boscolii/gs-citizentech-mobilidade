@@ -2,7 +2,10 @@ openapi: 3.0.3
 info:
   title: CitizenTech Mobilidade API
   version: 1.0.0
-  description: Consulta de pontos e linhas de ônibus com orientação assistida.
+  description: >-
+    Consulta de pontos e linhas de ônibus com orientação assistida. O slice usa
+    dados fictícios em memória. A resposta 503 da consulta de ponto está prevista
+    para uma futura fonte externa; o repositório atual não simula essa falha.
 servers:
   - url: http://localhost:8000
 paths:
@@ -17,7 +20,7 @@ paths:
         '400': { $ref: '#/components/responses/BadRequest' }
   /points/{pointId}:
     get:
-      summary: Consulta um ponto de parada
+      summary: Consulta um ponto de parada e, se cadastrada, uma alternativa
       parameters:
         - name: pointId
           in: path
@@ -57,6 +60,10 @@ components:
         address: { type: string, example: 'Av. Central, 100' }
         status: { type: string, enum: [AVAILABLE, TEMPORARILY_CLOSED, MAINTENANCE] }
         lines: { type: array, items: { type: string }, example: ['101', '205'] }
+        alternativePointId:
+          type: string
+          description: Identificador do ponto alternativo cadastrado; omitido quando não houver alternativa conhecida.
+          example: P001
     PointPage:
       type: object
       required: [items, limit, offset, total]
@@ -69,8 +76,8 @@ components:
       type: object
       required: [pointId, question]
       properties:
-        pointId: { type: string, minLength: 1 }
-        question: { type: string, minLength: 1, maxLength: 300 }
+        pointId: { type: string, minLength: 1, pattern: '\S' }
+        question: { type: string, minLength: 1, maxLength: 300, pattern: '\S' }
     AskResponse:
       type: object
       required: [answer, source]

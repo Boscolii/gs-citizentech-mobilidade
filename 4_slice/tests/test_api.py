@@ -1,5 +1,11 @@
 import json
 from io import BytesIO
+from pathlib import Path
+
+import jsonschema
+import pytest
+import yaml
+
 from src.api.app import create_app
 from src.infra.assistant_adapter import UnavailableAssistantAdapter
 
@@ -71,3 +77,24 @@ def test_list_points_honors_pagination():
     assert status.startswith("200")
     assert [point["id"] for point in body["items"]] == ["P002"]
     assert (body["limit"], body["offset"], body["total"]) == (1, 1, 2)
+
+
+def test_unavailable_point_suggests_known_alternative():
+    status, body = request(create_app(), "GET", "/points/P002")
+    assert status.startswith("200")
+    assert body["status"] == "MAINTENANCE"
+    assert body["alternativePointId"] == "P001"
+
+    status, answer = request(create_app(), "POST", "/ask", {"pointId": "P002", "question": "Qual alternativa?"})
+    assert status.startswith("200")
+    assert "P001" in answer["answer"]
+
+
+@pytest.mark.parametrize("point_id", ["P001", "P002"])
+def test_point_response_matches_openapi_schema(point_id):
+    contract_path = Path(__file__).resolve().parents[2] / "2_contrato_api.yaml"
+    with contract_path.open(encoding="utf-8") as contract_file:
+        contract = yaml.safe_load(contract_file)
+    status, body = request(create_app(), "GET", f"/points/{point_id}")
+    assert status.startswith("200")
+    jsonschema.Draft4Validator(contract["components"]["schemas"]["Point"]).validate(body)

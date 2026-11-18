@@ -7,7 +7,7 @@ Data: 15/11/2026
 - Prompt: “Quero que faça esse projeto comigo”, acompanhado do briefing da GS 2026.2.
 - Uso: a IA ajudou a transformar o briefing em rascunho de requisitos, contrato OpenAPI, arquitetura, slice Python e testes.
 - Revisão humana obrigatória: o grupo deve revisar todos os requisitos, substituir dados de exemplo, executar os comandos, validar o YAML e entender/defender cada ADR.
-- Descartado: qualquer afirmação de CI executado no GitHub ou link de vídeo, pois essas evidências ainda não existem.
+- Na elaboração inicial, o CI ainda não havia sido executado no GitHub e o vídeo ainda não existia; nenhuma evidência foi inventada.
 
 ## Próximos prompts a registrar
 
@@ -18,3 +18,9 @@ Data: 16/11/2026
 - Uso: consulta às aulas sobre arquitetura hexagonal, contratos, testes/CI, observabilidade e especificação; aplicação de rastreabilidade e teste de paginação.
 - Correção solicitada: retirar do README as referências diretas às aulas e usar os materiais apenas para aperfeiçoar o trabalho.
 - Decisão: apresentar como metas futuras as capacidades de observabilidade e IA real ainda não implementadas, sem afirmar que foram medidas ou executadas.
+
+Data: 17/11/2026
+- Uso: ajuda para publicar no GitHub, explicar a falha de importação no CI e ajustar o comando de execução dos testes.
+- Evidência: o usuário compartilhou capturas reais da execução CI #2 verde no commit b220898, adicionadas ao README.
+- Revisão: o usuário pediu uma conferência geral; foram identificados falta de alternativa de mobilidade e divergências entre documentação, contrato e slice.
+- Ajustes: alternativa fictícia cadastrada, teste de schema OpenAPI e esclarecimento dos limites de cobertura, telemetria e guardrails. Os casos de avaliação são um plano, não resultados de teste de um LLM.

@@ -6,10 +6,14 @@ Integrantes:
 - Joao Henrique - RM 563578
 - Tomazzo Canterucci - RM 565566
 
+Repositório: https://github.com/Boscolii/gs-citizentech-mobilidade
+Vídeo: pendente de gravação e inclusão do link em 7_demo_video_url.txt.
+
 Cola compacta:
 - Problema: consulta confiável de situação e linhas de um ponto.
 - Contrato: OpenAPI é fonte de verdade; endpoint real GET /points/{pointId}.
 - Arquitetura: domínio depende de portas; IA é adaptador trocável.
 - Testes: determinísticos, sem LLM real, com cenário feliz, 404 e 503.
-- Guardrails: não inventar dados e não expor dados pessoais/segredos.
-- Pendências humanas: publicar o CI, colocar link do vídeo e revisar a entrega.
+- Alternativa: P002 em manutenção indica P001; são dados fictícios, sem cálculo de proximidade.
+- Guardrails propostos: não inventar dados e não expor dados pessoais/segredos; o slice não tem filtro geral de dados pessoais nem LLM real.
+- Pendências humanas: gravar vídeo, incluir o link, revisar o trabalho e entregar o ZIP.

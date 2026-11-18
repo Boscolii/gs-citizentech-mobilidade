@@ -1,7 +1,5 @@
 # Visão do Produto - CitizenTech Mobilidade
 
-> Substitua os campos entre colchetes pelos dados reais do grupo antes da entrega.
-
 ## Persona e problema
 
 **Persona primária:** Marina, 32 anos, passageira de ônibus que trabalha em turnos e depende de transporte público para chegar ao trabalho. Ela precisa saber se há serviço no ponto consultado e qual linha pode usar, sem precisar instalar aplicativos ou interpretar dados técnicos. Marina não é gestora de tráfego e não usa este serviço para rastreamento em tempo real de veículos.
@@ -11,7 +9,7 @@
 ## Requisitos funcionais
 
 - **RF-01:** listar pontos de parada com paginação `limit` e `offset`.
-- **RF-02:** consultar um ponto pelo seu identificador e informar nome, endereço, status e linhas atendidas.
+- **RF-02:** consultar um ponto pelo seu identificador e informar nome, endereço, status, linhas atendidas e alternativa, quando cadastrada.
 - **RF-03:** listar as linhas que atendem um ponto disponível.
 - **RF-04:** responder uma pergunta curta sobre um ponto por meio de um assistente, somente usando os dados retornados pelo domínio.
 - **RF-05:** informar erro padronizado quando o ponto não existir ou a consulta for inválida.
@@ -19,7 +17,7 @@
 ## Requisitos não funcionais mensuráveis
 
 - **RNF-01 - Desempenho:** 95% das consultas de ponto devem terminar em menos de 500 ms, medido por log de latência no ambiente de homologação.
-- **RNF-02 - Qualidade:** a cobertura de linhas do módulo `src/` deve ser de no mínimo 70%, verificada no CI.
+- **RNF-02 - Qualidade:** a cobertura de linhas do módulo `src/` deve ser de no mínimo 70%, medida por ferramenta de cobertura no CI de produção. A medição ainda não foi implementada neste slice.
 - **RNF-03 - Disponibilidade:** o serviço deve alcançar 99% de disponibilidade mensal entre 6h e 22h, medida pelo monitoramento de health check.
 - **RNF-04 - Segurança:** 0 chaves, tokens ou arquivos `.env` reais podem estar versionados, verificado na revisão do repositório antes da entrega.
 
@@ -31,11 +29,13 @@
 4. **Dado** uma pergunta válida sobre um ponto existente, **quando** o cidadão enviar `POST /ask`, **então** receberá HTTP 200 e uma resposta baseada exclusivamente no status e nas linhas conhecidas.
 5. **Dado** um corpo sem `pointId` ou com pergunta vazia, **quando** o cidadão enviar `POST /ask`, **então** receberá HTTP 422 e `ErrorResponse`.
 6. **Dado** indisponibilidade do provedor de IA, **quando** uma pergunta válida for processada, **então** o serviço responderá HTTP 503 sem inventar dados.
+7. **Dado** que P002 está em manutenção e tem P001 como alternativa cadastrada, **quando** o cidadão consultar P002, **então** receberá `alternativePointId: P001`.
 
 ## Fora de escopo
 
 - Rastreamento GPS em tempo real, previsão de chegada ou compra de passagem.
 - Cadastro, autenticação de usuários e alteração de dados de linhas/pontos.
+- Cálculo de distância ou garantia de que o ponto alternativo esteja próximo ou acessível: a alternativa é cadastrada manualmente na demonstração.
 
 ## Riscos e mitigação
 

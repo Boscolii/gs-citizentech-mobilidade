@@ -16,10 +16,14 @@ class Point:
     address: str
     status: PointStatus
     lines: list[str]
+    alternative_point_id: str | None = None
 
     def to_dict(self):
         data = asdict(self)
         data["status"] = self.status.value
+        alternative = data.pop("alternative_point_id")
+        if alternative is not None:
+            data["alternativePointId"] = alternative
         return data
 
 
