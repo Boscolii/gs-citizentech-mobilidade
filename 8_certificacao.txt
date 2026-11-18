@@ -1,0 +1,15 @@
+Turma: 2CCPY-2026
+Modalidade: trio
+
+Integrantes:
+- Henrique Boscoli - RM 563651
+- Joao Henrique - RM 563578
+- Tomazzo Canterucci - RM 565566
+
+Cola compacta:
+- Problema: consulta confiável de situação e linhas de um ponto.
+- Contrato: OpenAPI é fonte de verdade; endpoint real GET /points/{pointId}.
+- Arquitetura: domínio depende de portas; IA é adaptador trocável.
+- Testes: determinísticos, sem LLM real, com cenário feliz, 404 e 503.
+- Guardrails: não inventar dados e não expor dados pessoais/segredos.
+- Pendências humanas: publicar o CI, colocar link do vídeo e revisar a entrega.

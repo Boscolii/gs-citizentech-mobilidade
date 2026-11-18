@@ -1,0 +1,86 @@
+openapi: 3.0.3
+info:
+  title: CitizenTech Mobilidade API
+  version: 1.0.0
+  description: Consulta de pontos e linhas de ônibus com orientação assistida.
+servers:
+  - url: http://localhost:8000
+paths:
+  /points:
+    get:
+      summary: Lista pontos de parada
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200': { description: Lista paginada, content: { application/json: { schema: { $ref: '#/components/schemas/PointPage' } } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /points/{pointId}:
+    get:
+      summary: Consulta um ponto de parada
+      parameters:
+        - name: pointId
+          in: path
+          required: true
+          schema: { type: string, example: P001 }
+      responses:
+        '200': { description: Ponto encontrado, content: { application/json: { schema: { $ref: '#/components/schemas/Point' } } } }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /ask:
+    post:
+      summary: Orienta o cidadão usando dados conhecidos do ponto
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/AskRequest' } } }
+      responses:
+        '200': { description: Orientação segura, content: { application/json: { schema: { $ref: '#/components/schemas/AskResponse' } } } }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '422': { $ref: '#/components/responses/Unprocessable' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+components:
+  parameters:
+    Limit: { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 20 } }
+    Offset: { name: offset, in: query, schema: { type: integer, minimum: 0, default: 0 } }
+  responses:
+    BadRequest: { description: Consulta inválida, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+    NotFound: { description: Recurso não encontrado, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+    Unprocessable: { description: Corpo inválido, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+    Unavailable: { description: Dependência indisponível, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+  schemas:
+    Point:
+      type: object
+      required: [id, name, address, status, lines]
+      properties:
+        id: { type: string, example: P001 }
+        name: { type: string, example: Terminal Central }
+        address: { type: string, example: 'Av. Central, 100' }
+        status: { type: string, enum: [AVAILABLE, TEMPORARILY_CLOSED, MAINTENANCE] }
+        lines: { type: array, items: { type: string }, example: ['101', '205'] }
+    PointPage:
+      type: object
+      required: [items, limit, offset, total]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/Point' } }
+        limit: { type: integer }
+        offset: { type: integer }
+        total: { type: integer }
+    AskRequest:
+      type: object
+      required: [pointId, question]
+      properties:
+        pointId: { type: string, minLength: 1 }
+        question: { type: string, minLength: 1, maxLength: 300 }
+    AskResponse:
+      type: object
+      required: [answer, source]
+      properties:
+        answer: { type: string }
+        source: { type: string, enum: [FACTUAL_ASSISTANT] }
+    ErrorResponse:
+      type: object
+      required: [code, message, traceId]
+      properties:
+        code: { type: string, example: POINT_NOT_FOUND }
+        message: { type: string }
+        traceId: { type: string }

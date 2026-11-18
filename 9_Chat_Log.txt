@@ -1,0 +1,20 @@
+# Registro de uso de IA
+
+Data: 15/11/2026
+
+## Uso registrado
+
+- Prompt: “Quero que faça esse projeto comigo”, acompanhado do briefing da GS 2026.2.
+- Uso: a IA ajudou a transformar o briefing em rascunho de requisitos, contrato OpenAPI, arquitetura, slice Python e testes.
+- Revisão humana obrigatória: o grupo deve revisar todos os requisitos, substituir dados de exemplo, executar os comandos, validar o YAML e entender/defender cada ADR.
+- Descartado: qualquer afirmação de CI executado no GitHub ou link de vídeo, pois essas evidências ainda não existem.
+
+## Próximos prompts a registrar
+
+Acrescente nesta seção dúvidas, prompts adicionais, respostas aproveitadas e conteúdo descartado até a entrega.
+
+Data: 16/11/2026
+- Prompt: “essas sao as aulas, use algo das aulas se for util”, com pasta do Google Drive.
+- Uso: consulta às aulas sobre arquitetura hexagonal, contratos, testes/CI, observabilidade e especificação; aplicação de rastreabilidade e teste de paginação.
+- Correção solicitada: retirar do README as referências diretas às aulas e usar os materiais apenas para aperfeiçoar o trabalho.
+- Decisão: apresentar como metas futuras as capacidades de observabilidade e IA real ainda não implementadas, sem afirmar que foram medidas ou executadas.
