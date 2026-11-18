@@ -53,9 +53,15 @@ O OpenAPI foi escrito antes do slice. O endpoint implementado `GET /points/{poin
 
 ## CI e evidência
 
-O workflow em `.github/workflows/ci.yml` instala as dependências, executa o lint e os testes. A cópia em `4_slice/.github/workflows/ci.yml` compõe o entregável. Publiquem a pasta do projeto como raiz do repositório e insiram abaixo uma captura verdadeira da execução verde e o link do repositório.
+O workflow em `.github/workflows/ci.yml` instala as dependências, executa o lint e os testes. A cópia em `4_slice/.github/workflows/ci.yml` compõe o entregável.
 
-> PENDENTE: adicionar print real do GitHub Actions verde; não fabricar essa evidência.
+Repositório: [gs-citizentech-mobilidade](https://github.com/Boscolii/gs-citizentech-mobilidade). A captura abaixo registra a execução CI #2 aprovada no commit `b220898`.
+
+![Execução do CI aprovada no GitHub Actions](ci-verde.png)
+
+As etapas de lint e testes concluídas na mesma execução:
+
+![Detalhes do CI com lint e testes aprovados](ci-detalhes.png)
 
 ## Vídeo (até 3 minutos)
 
