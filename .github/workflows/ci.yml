@@ -9,4 +9,4 @@ jobs:
         with: { python-version: '3.12' }
       - run: pip install -r 4_slice/requirements-dev.txt
       - run: ruff check 4_slice/src 4_slice/tests
-      - run: cd 4_slice && pytest -q
+      - run: cd 4_slice && python -m pytest -q
